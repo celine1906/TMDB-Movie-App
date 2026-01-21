@@ -15,7 +15,9 @@ struct APIConstants {
     
     struct Endpoints {
         static let discoverMovies = "/discover/movie"
+        static let discoverTV = "/discover/tv"
         static let movieDetails = "/movie/"
+        static let TVDetails = "/tv/"
         static let reviews = "/reviews"
         static let videos = "/videos"
     }
