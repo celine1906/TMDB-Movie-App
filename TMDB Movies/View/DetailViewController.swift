@@ -187,7 +187,7 @@ class DetailViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: trailerPlayerView.bottomAnchor, constant: 16),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -228,7 +228,8 @@ class DetailViewController: UIViewController {
             reviewsTableView.topAnchor.constraint(equalTo: reviewsTitleLabel.bottomAnchor, constant: 8),
             reviewsTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             reviewsTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            reviewsTableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            reviewsTableView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor
+                                                    ),
             
             loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
