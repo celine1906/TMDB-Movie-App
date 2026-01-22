@@ -8,6 +8,7 @@
 import Foundation
 
 protocol PosterPresentable {
+    var id: Int { get }
     var tmdbPosterURL: URL? { get }
     var ratingText: String? { get }
 }

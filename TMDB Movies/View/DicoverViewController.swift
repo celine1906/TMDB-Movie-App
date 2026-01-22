@@ -160,10 +160,12 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
+        guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: "PosterCell",
             for: indexPath
-        ) as! PosterCell
+        ) as? PosterCell else {
+            return UICollectionViewCell()
+        }
 
         cell.configure(with: viewModel.items[indexPath.item])
         return cell
@@ -188,6 +190,15 @@ extension DiscoverViewController: UICollectionViewDelegate, UICollectionViewData
         if indexPath.item == viewModel.items.count - 5 {
             viewModel.load()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = viewModel.items[indexPath.item]
+        let detailVC = DetailViewController(
+            id: item.id,
+            type: segmentedControl.selectedSegmentIndex == 0 ? .movie : .tv
+        )
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
