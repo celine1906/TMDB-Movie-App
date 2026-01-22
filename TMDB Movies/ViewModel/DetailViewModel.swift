@@ -108,14 +108,19 @@ final class DetailViewModel {
             .sink { _ in
                 completion()
             } receiveValue: { [weak self] response in
-                let trailer = response.results.first {
-                    $0.type == "Trailer" && $0.site == "YouTube"
-                }
+                guard let self else { return }
 
-                self?.trailerKey = trailer?.key
+                let videos = response.results.filter { $0.site == "YouTube" }
+
+                let priorityTypes = ["Trailer", "Teaser", "Clip", "Featurette"]
+
+                self.trailerKey = priorityTypes.compactMap { type in
+                    videos.first(where: { $0.type == type })?.key
+                }.first
             }
             .store(in: &cancellables)
     }
+
 
 }
 
@@ -215,3 +220,4 @@ extension DetailViewModel {
         }
     }
 }
+
