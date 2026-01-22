@@ -22,7 +22,7 @@ final class DetailViewModel {
     }
 
     @Published var reviews: [Review] = []
-    @Published var trailerURL: URL?
+    @Published var trailerKey: String?
     @Published var isLoading = false
     @Published var error: NetworkError?
 
@@ -101,17 +101,22 @@ final class DetailViewModel {
     }
     
     private func loadVideos(completion: @escaping () -> Void) {
-        let urlString = "\(APIConstants.baseURL)\(baseDetailPath)\(id)\(APIConstants.Endpoints.videos)?api_key=\(APIConstants.apiKey)"
-        
+        let urlString =
+        "\(APIConstants.baseURL)\(baseDetailPath)\(id)\(APIConstants.Endpoints.videos)?api_key=\(APIConstants.apiKey)"
+
         NetworkService.shared.fetch(VideosResponse.self, from: urlString)
             .sink { _ in
                 completion()
             } receiveValue: { [weak self] response in
-                let trailer = response.results.first { $0.type == "Trailer" && $0.site == "YouTube" }
-                self?.trailerURL = trailer?.youtubeURL
+                let trailer = response.results.first {
+                    $0.type == "Trailer" && $0.site == "YouTube"
+                }
+
+                self?.trailerKey = trailer?.key
             }
             .store(in: &cancellables)
     }
+
 }
 
 private extension DetailViewModel {

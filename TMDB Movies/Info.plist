@@ -8,6 +8,11 @@
 		<true/>
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>youtube.com</key>
+			<string></string>
+		</dict>
 	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

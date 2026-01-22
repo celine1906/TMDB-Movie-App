@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		122E77B42F21CF6800FC6C69 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 122E77B32F21CF6800FC6C69 /* YouTubeiOSPlayerHelper */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		123520B52F206F53000FD249 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				122E77B42F21CF6800FC6C69 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,12 +90,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		122E77B22F21CF6800FC6C69 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		123520952F206F52000FD249 = {
 			isa = PBXGroup;
 			children = (
 				123520A02F206F52000FD249 /* TMDB Movies */,
 				123520B72F206F53000FD249 /* TMDB MoviesTests */,
 				123520C12F206F53000FD249 /* TMDB MoviesUITests */,
+				122E77B22F21CF6800FC6C69 /* Frameworks */,
 				1235209F2F206F52000FD249 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -124,8 +137,6 @@
 				123520A02F206F52000FD249 /* TMDB Movies */,
 			);
 			name = "TMDB Movies";
-			packageProductDependencies = (
-			);
 			productName = "TMDB Movies";
 			productReference = 1235209E2F206F52000FD249 /* TMDB Movies.app */;
 			productType = "com.apple.product-type.application";
@@ -147,8 +158,6 @@
 				123520B72F206F53000FD249 /* TMDB MoviesTests */,
 			);
 			name = "TMDB MoviesTests";
-			packageProductDependencies = (
-			);
 			productName = "TMDB MoviesTests";
 			productReference = 123520B42F206F53000FD249 /* TMDB MoviesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -170,8 +179,6 @@
 				123520C12F206F53000FD249 /* TMDB MoviesUITests */,
 			);
 			name = "TMDB MoviesUITests";
-			packageProductDependencies = (
-			);
 			productName = "TMDB MoviesUITests";
 			productReference = 123520BE2F206F53000FD249 /* TMDB MoviesUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -208,6 +215,9 @@
 			);
 			mainGroup = 123520952F206F52000FD249;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				122E77B12F21CC9E00FC6C69 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1235209F2F206F52000FD249 /* Products */;
 			projectDirPath = "";
@@ -595,6 +605,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		122E77B12F21CC9E00FC6C69 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		122E77B32F21CF6800FC6C69 /* YouTubeiOSPlayerHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 122E77B12F21CC9E00FC6C69 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			productName = YouTubeiOSPlayerHelper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 123520962F206F52000FD249 /* Project object */;
 }

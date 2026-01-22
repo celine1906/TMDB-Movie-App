@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import WebKit
+import YouTubeiOSPlayerHelper
 import Combine
 
 class DetailViewController: UIViewController {
@@ -93,18 +93,12 @@ class DetailViewController: UIViewController {
         return label
     }()
     
-    private let trailerWebView: WKWebView = {
-        let config = WKWebViewConfiguration()
-        config.allowsInlineMediaPlayback = true
-        config.mediaTypesRequiringUserActionForPlayback = []
-        
-        let webView = WKWebView(frame: .zero, configuration: config)
-        webView.scrollView.isScrollEnabled = false
-        webView.backgroundColor = .black
-        webView.isOpaque = false
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        return webView
+    private let trailerPlayerView: YTPlayerView = {
+        let view = YTPlayerView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
+
     
     private let reviewsTitleLabel: UILabel = {
         let label = UILabel()
@@ -154,6 +148,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupBindings()
+        
         viewModel.loadData()
     }
     
@@ -161,10 +156,11 @@ class DetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .never
         
+        view.addSubview(trailerPlayerView)
         view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
         
-        contentView.addSubview(trailerWebView)
+        scrollView.addSubview(contentView)
+
         contentView.addSubview(titleLabel)
         contentView.addSubview(taglineLabel)
         contentView.addSubview(ratingStackView)
@@ -182,7 +178,13 @@ class DetailViewController: UIViewController {
         reviewsTableView.dataSource = self
  
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            
+            trailerPlayerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            trailerPlayerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            trailerPlayerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            trailerPlayerView.heightAnchor.constraint(equalToConstant: 220),
+            
+            scrollView.topAnchor.constraint(equalTo: trailerPlayerView.bottomAnchor, constant: 16),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -193,12 +195,7 @@ class DetailViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            trailerWebView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            trailerWebView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            trailerWebView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            trailerWebView.heightAnchor.constraint(equalToConstant: 220),
-            
-            titleLabel.topAnchor.constraint(equalTo: trailerWebView.bottomAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
@@ -253,10 +250,10 @@ class DetailViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        viewModel.$trailerURL
+        viewModel.$trailerKey
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] url in
-                self?.updateTrailer(with: url)
+            .sink { [weak self] key in
+                self?.updateTrailer(with: key)
             }
             .store(in: &cancellables)
         
@@ -299,51 +296,22 @@ class DetailViewController: UIViewController {
     }
 
     
-    private func updateTrailer(with url: URL?) {
-        guard let url = url else {
-            trailerWebView.isHidden = true
+    private func updateTrailer(with key: String?) {
+        guard let key else {
+            trailerPlayerView.isHidden = true
             return
         }
-        
-        trailerWebView.isHidden = false
-        
-        let embedHTML = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                * { margin: 0; padding: 0; }
-                body { background-color: #000; }
-                .video-container {
-                    position: relative;
-                    width: 100%;
-                    padding-bottom: 56.25%;
-                    height: 0;
-                    overflow: hidden;
-                }
-                iframe {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    border: 0;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="video-container">
-                <iframe src="\(url.absoluteString)?playsinline=1" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                </iframe>
-            </div>
-        </body>
-        </html>
-        """
-        
-        trailerWebView.loadHTMLString(embedHTML, baseURL: URL(string: "https://www.youtube.com"))
+
+        trailerPlayerView.isHidden = false
+        trailerPlayerView.load(
+            withVideoId: key,
+            playerVars: [
+                "playsinline": 1,
+                "controls": 1,
+                "autoplay": 0,
+                "modestbranding": 1
+            ]
+        )
     }
 }
 

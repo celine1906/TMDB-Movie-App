@@ -17,9 +17,4 @@ struct Video: Codable {
     let name: String
     let site: String
     let type: String
-    
-    var youtubeURL: URL? {
-        guard site == "YouTube" else { return nil }
-        return URL(string: APIConstants.youtubeBaseURL + key)
-    }
 }
